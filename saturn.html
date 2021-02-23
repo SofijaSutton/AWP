@@ -1,0 +1,99 @@
+
+<html>
+    <head>
+        <title>5 - Saturn</title>
+        <!-- <link rel = "stylesheet" href = "Style.css"> -->
+        <script src = "three.min.js"></script>       
+    </head>
+    <body>
+    </body> 
+</html>
+
+<script>    
+    let scene, camera, renderer;
+    let planet;
+    let rings = [];
+    let ADD = 0.1;
+
+    
+    let createSaturn = function() {
+        //create sphere first
+        let geometry = new THREE.SphereGeometry(5, 30, 30);
+        let material = new THREE.MeshBasicMaterial(
+                                        {color: 0xffaaaa});
+        planet = new THREE.Mesh( geometry, material );
+        scene.add(planet);
+
+        //add rings
+        geometry = new THREE.TorusGeometry(5, .7, 2, 50);
+        material = new THREE.MeshBasicMaterial(
+                                        {color: 0x8d5524});
+        let ring = new THREE.Mesh( geometry, material );
+        rings.push(ring);
+        scene.add(ring);
+//ring 2
+        geometry = new THREE.TorusGeometry(6.9, .7, 2, 50);
+        material = new THREE.MeshBasicMaterial(
+                                        {color: 0xffad60});
+        ring = new THREE.Mesh( geometry, material );
+        rings.push(ring);
+        scene.add(ring);
+//ring 3
+        geometry = new THREE.TorusGeometry(8.5, .7, 2, 50);
+        material = new THREE.MeshBasicMaterial(
+                                        {color: 0xeac086});
+        ring = new THREE.Mesh( geometry, material );
+        rings.push(ring);
+        scene.add(ring);
+
+        //set view angle  to rings
+        rings.forEach(ring => { 
+            ring.rotation.x = 1.9;
+            ring.rotation.y = 2.9;
+            scene.add(ring);
+        });
+
+    };
+    
+    
+    // set up the environment - 
+    // initiallize scene, camera, objects and renderer
+    let init = function() {
+        // create the scene
+        scene = new THREE.Scene();
+        scene.background = new THREE.Color(0x000000);
+        
+        // create an locate the camera
+        camera = new THREE.PerspectiveCamera(75, 
+                        window.innerWidth / window.innerHeight, 
+                        1, 1000);
+        camera.position.z = 20;
+        camera.position.y = 5;
+        
+        createSaturn();
+        // create the renderer   
+        renderer = new THREE.WebGLRenderer();   
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        
+        document.body.appendChild(renderer.domElement);
+        
+    };
+   
+    
+    // main animation loop - calls 50-60 times per second.
+    let mainLoop = function() {
+
+      // planet rotation
+      camera.position.y += ADD;
+      if (camera.position.y >= 10 || camera.position.y <= -10)
+      ADD *= -1;
+    
+        
+        renderer.render(scene, camera);
+        requestAnimationFrame(mainLoop);
+    };
+    
+    ///////////////////////////////////////////////
+    init();
+    mainLoop();
+</script>
