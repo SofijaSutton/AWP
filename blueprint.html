@@ -10,7 +10,7 @@
     </body>
 </html>
 <script>    
-    let scene, camera, renderer, sphere; // cube
+    let scene, camera, renderer, torus; // cube, sphere
     
     //creating a cube
     let ADD = 0.01; //speed for animation
@@ -22,12 +22,19 @@
     //     scene.add(cube);
     // };
 
-    let createSphere = function() {
-        let geometry = new THREE.SphereGeometry(5, 30, 30, 0, Math.PI, 0, Math.PI/2); //last 4nums are for horiztonal and vertial sweep (cuts sphere in half)
-        let material = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true});
-        sphere = new THREE.Mesh( geometry, material );
-        scene.add(sphere);
-    }  
+    // let createSphere = function() {
+    //     let geometry = new THREE.SphereGeometry(5, 30, 30, 0, Math.PI, 0, Math.PI/2); //last 4nums are for horiztonal and vertial sweep (cuts sphere in half)
+    //     let material = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true});
+    //     sphere = new THREE.Mesh( geometry, material );
+    //     scene.add(sphere);
+    //}  
+
+    let createTorus = function() {
+        let geometry = new THREE. TorusGeometry(5, 1, 20, 30);
+        let material = new THREE.MeshBasicMaterial({color: 0x920E92, wireframe: true });
+        torus = new THREE.Mesh( geometry, material );
+        scene.add(torus);
+    }
 
 
     // set up the environment - 
@@ -35,7 +42,7 @@
     let init = function() {
         // 1. create the scene
         scene = new THREE.Scene();
-        scene.background = new THREE.Color(0xababab);
+        scene.background = new THREE.Color(0xC7F4B4);
         // ....
         
         // 2. create an locate the camera
@@ -46,7 +53,8 @@
         //createCube();
         
         // call createSphere
-        createSphere();
+        //createSphere();
+        createTorus();
         
         // view axes for visual assistance
         //let axes = new THREE.AxesHelper(2);
@@ -73,8 +81,8 @@
         //     ADD *= -1; 
 
         //sphere rotation
-        sphere.rotation.x += ADD;
-        sphere.rotation.y += ADD;
+        torus.rotation.x += ADD;
+        torus.rotation.y += ADD;
 
         renderer.render(scene, camera);
         requestAnimationFrame(mainLoop);
