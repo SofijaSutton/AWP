@@ -1289,17 +1289,19 @@ let fontJSON =  {
 <script> 
     
     let scene, camera, renderer, text;
-    let ADD = 0.01, theta = 0;
+    let ADD = 0.04, theta = 0;
     
     let createGeometry = function() {
         
         let loader = new THREE.FontLoader();
         let font = loader.parse(fontJSON);
-        let geometry = new THREE.TextGeometry("Sofija Sutton", {font: font, size: 6, height: 3});
+        let geometry = new THREE.TextGeometry("Sofija Sutton \n likes cake and ice cream \n mostly sweet and nice things \n She loves her cats \n and her partner \n and her family and bed \n goodnight.", {font: font, size: 3, height: 0.2});
 
         let material = new THREE.MeshBasicMaterial({color:0x920E92});
         text = new THREE.Mesh(geometry, material);
         text.position.x = -25;
+        text.rotation.x = -0.9; //sets angles of text
+
         scene.add(text);
         
     };
@@ -1333,7 +1335,9 @@ let fontJSON =  {
     // main animation loop - calls 50-60 times per second.
     let mainLoop = function() {
         //how to rotate at center point, not edge when 7 axis rotation?
-        text.rotation.x += ADD;
+        text.position.y += ADD/2;
+        text.position.z -= ADD; 
+
 
         renderer.render(scene, camera);
         requestAnimationFrame(mainLoop);
