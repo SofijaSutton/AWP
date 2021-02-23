@@ -10,16 +10,26 @@
     </body>
 </html>
 <script>    
-    let scene, camera, renderer, cube;
+    let scene, camera, renderer, sphere; // cube
     
     //creating a cube
-    let ADD = 0.01;
-    let createCube = function() {
-        let geometry = new THREE.BoxGeometry(1, 1, 1);
-        let material = new THREE.MeshBasicMaterial({color: 0x00a1cb});
-        cube = new THREE.Mesh( geometry, material );
-        scene.add(cube);
-    };
+    let ADD = 0.01; //speed for animation
+    // let createCube = function() {
+    //     //(0, 0, 0) = center of screen scene. All other units, as in code below - is unitless but relational
+    //     let geometry = new THREE.BoxGeometry(1, 1, 1);
+    //     let material = new THREE.MeshBasicMaterial({color: 0x00a1cb});
+    //     cube = new THREE.Mesh( geometry, material );
+    //     scene.add(cube);
+    // };
+
+    let createSphere = function() {
+        let geometry = new THREE.SphereGeometry(5, 30, 30, 0, Math.PI, 0, Math.PI/2); //last 4nums are for horiztonal and vertial sweep (cuts sphere in half)
+        let material = new THREE.MeshBasicMaterial({color: 0xffffff, wireframe: true});
+        sphere = new THREE.Mesh( geometry, material );
+        scene.add(sphere);
+    }  
+
+
     // set up the environment - 
     // initiallize scene, camera, objects and renderer
     let init = function() {
@@ -29,14 +39,18 @@
         // ....
         
         // 2. create an locate the camera
-        camera = new THREE.PerspectiveCamera( 30, window.innerWidth / window.innerHeight, 1, 1000 );
-        camera.position.z = 5;
+        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 1000 );
+        camera.position.z = 20;
 
         // call createCube
-        createCube();
+        //createCube();
         
-        // 3. create and locate the objects on the scene
-        // ...
+        // call createSphere
+        createSphere();
+        
+        // view axes for visual assistance
+        //let axes = new THREE.AxesHelper(2);
+        //scene.add(axes);
         
         // 4. create the renderer 
         renderer = new THREE.WebGLRenderer();
@@ -48,12 +62,20 @@
 
     // main animation loop - calls every 50-60 ms.
     let mainLoop = function() {
-        cube.position.z += ADD;
-        cube.position.x += ADD;
+        //moves cube along respective axis
+        // cube.position.z += ADD;
+        // cube.position.x += ADD;
+        // //rotates cube
+        // cube.rotation.y += ADD;
+        // cube.rotation.z += ADD;
 
-        if (cube.position.x <= -2 || cube.position.x >= 2)
-            ADD *= -1; 
-        
+        // if (cube.position.x <= -2 || cube.position.x >= 1)
+        //     ADD *= -1; 
+
+        //sphere rotation
+        sphere.rotation.x += ADD;
+        sphere.rotation.y += ADD;
+
         renderer.render(scene, camera);
         requestAnimationFrame(mainLoop);
     };
