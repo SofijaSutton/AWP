@@ -30,7 +30,7 @@
     //}  
 
     let createTorus = function() {
-        let geometry = new THREE. TorusGeometry(5, 1, 20, 30);
+        let geometry = new THREE.TorusGeometry(5, 1, 20, 30);
         let material = new THREE.MeshBasicMaterial({color: 0x920E92, wireframe: true });
         torus = new THREE.Mesh( geometry, material );
         scene.add(torus);
