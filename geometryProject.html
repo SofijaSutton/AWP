@@ -1288,21 +1288,95 @@ let fontJSON =  {
 </script>
 <script> 
     
-    let scene, camera, renderer, text;
+    let scene, camera, renderer, text, sphere;
     let ADD = 0.01, theta = 0;
     
     let createGeometry = function() {
         
         let loader = new THREE.FontLoader();
         let font = loader.parse(fontJSON);
-        let geometry = new THREE.TextGeometry("Out of Office", {font: font, size: 3, height: 1});
+        let geometry = new THREE.TextGeometry("Out of Office", {font: font, size: 4, height: 1});
 
         let material = new THREE.MeshBasicMaterial({color:0x920E92});
         text = new THREE.Mesh(geometry, material);
         text.position.x = -15;
+        text.position.y = 5;
 
         scene.add(text);
-        
+
+        //planet 1
+        geometry = new THREE.SphereGeometry(6, 4, 10);
+        material = new THREE.MeshBasicMaterial(
+                                        {color: 0xffaaaa, 
+                                            wireframe: true});
+        planet1 = new THREE.Mesh( geometry, material );
+        planet1.position.x = -22;
+        planet1.position.y = -5;
+        scene.add(planet1);
+
+             //planet 2
+             geometry = new THREE.SphereGeometry(1, 20, 20);
+        material = new THREE.MeshBasicMaterial(
+                                        {color: 0xffad60, wireframe: true});
+        planet3 = new THREE.Mesh( geometry, material );
+        planet3.position.x = -22;
+        planet3.position.y = -5;
+        scene.add(planet3);
+
+        //yellow planet
+        geometry = new THREE.SphereGeometry(2, 20, 20);
+        material = new THREE.MeshBasicMaterial(
+                                        {color: 0xffad60});
+        planet2 = new THREE.Mesh( geometry, material );
+        planet2.position.x = -10;
+        planet2.position.y = 18;
+        scene.add(planet2);
+
+        //saturn
+         geometry = new THREE.SphereGeometry(5, 30, 30);
+         material = new THREE.MeshBasicMaterial(
+                                        {color: 0xffaaaa});
+        planet4 = new THREE.Mesh( geometry, material );
+        planet4.position.x = 22;
+        planet4.position.y = 23;
+        scene.add(planet4);
+
+        //add rings
+        let rings = [];
+        geometry = new THREE.TorusGeometry(5, .7, 2, 50);
+        material = new THREE.MeshBasicMaterial(
+                                        {color: 0x8d5524});
+        ring = new THREE.Mesh( geometry, material );
+        rings.push(ring);
+        ring.position.x = 22;
+        ring.position.y = 23;
+        scene.add(ring);
+//ring 2
+        geometry = new THREE.TorusGeometry(6.9, .7, 2, 50);
+        material = new THREE.MeshBasicMaterial(
+                                        {color: 0xffad60});
+        ring = new THREE.Mesh( geometry, material );
+        rings.push(ring);
+        ring.position.x = 22;
+        ring.position.y = 23;
+
+        scene.add(ring);
+//ring 3
+        geometry = new THREE.TorusGeometry(8.5, .7, 2, 50);
+        material = new THREE.MeshBasicMaterial(
+                                        {color: 0xeac086});
+        ring = new THREE.Mesh( geometry, material );
+        rings.push(ring);
+        ring.position.x = 22;
+        ring.position.y = 23;
+        scene.add(ring);
+
+        //set view angle  to rings
+        rings.forEach(ring => { 
+            ring.rotation.x = 1.7;
+            ring.rotation.y = .9;
+            scene.add(ring);
+        });    
     };
     
     
@@ -1318,7 +1392,7 @@ let fontJSON =  {
                     window.innerWidth / window.innerHeight, 
                     1, 1000);
         
-        camera.position.set(0, 2, 40);
+        camera.position.set(0, 13, 40);
         
         createGeometry();
         
@@ -1334,7 +1408,22 @@ let fontJSON =  {
     // main animation loop - calls 50-60 times per second.
     let mainLoop = function() {
         //how to rotate at center point, not edge when 7 axis rotation?
-        text.rotation.x += ADD;
+        text.rotation.x -= ADD;
+        planet1.rotation.y += ADD; //mini planet
+        planet2.position.x += ADD;
+        planet2.position.y += ADD;
+        planet2.position.z += ADD*4;
+
+
+
+
+   
+
+
+
+
+
+
 
         renderer.render(scene, camera);
         requestAnimationFrame(mainLoop);
