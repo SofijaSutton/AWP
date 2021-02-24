@@ -1492,7 +1492,7 @@
 
     scene.add(text);
 
-    //planet 1
+    //planet 1 - pink wireframe
     geometry = new THREE.SphereGeometry(6, 4, 10);
     material = new THREE.MeshBasicMaterial({
       color: 0xffaaaa,
@@ -1513,7 +1513,7 @@
     scene.add(cube);
 
 
-    //planet 2 with Normal Material
+    //planet 2 mini yellow with wireframe
     geometry = new THREE.SphereGeometry(2, 5, 10);
     material = new THREE.MeshBasicMaterial({
       color: 0xffad60,
@@ -1524,7 +1524,7 @@
     planet3.position.y = -5;
     scene.add(planet3);
 
-    //yellow planet
+    //yellow planet with Normal Material
     geometry = new THREE.SphereGeometry(2, 20, 20);
     material = new THREE.MeshNormalMaterial();
     planet2 = new THREE.Mesh(geometry, material);
@@ -1592,6 +1592,27 @@
     plane.rotation.z = 100;
 
     scene.add(plane);
+
+    //add cylinder with line material
+    geometry = new THREE.SphereGeometry(3, 2, 4);
+    material = new THREE.LineBasicMaterial({
+      color: 0xacd33f,
+      linewidth: 1
+     // dashSize: 1,
+      //gapSize: 10
+    });
+
+    sphere = new THREE.Line(geometry, material);
+    sphere.position.x = 40;
+    sphere.position.y = -1;
+    sphere.rotation.z = -10;
+    sphere.computeLineDistances();
+
+    scene.add(sphere);
+
+
+
+
   };
 
   // set up the environment -
@@ -1623,7 +1644,7 @@
   // main animation loop - calls 50-60 times per second.
   let mainLoop = function () {
     //how to rotate at center point, not edge when 7 axis rotation?
-    text.rotation.x -= ADD;
+    text.rotation.x -= ADD/2;
     planet1.rotation.y += ADD; //mini planet
     planet2.position.x += ADD;
     planet2.position.y += ADD;
@@ -1633,6 +1654,8 @@
     cube.position.z += ADD;
     if (cube.position.z >= 6 || cube.position.z <= -16)
     ADD *= -1;
+
+    sphere.rotation.z -= ADD/4;
     
 
 
