@@ -25,13 +25,13 @@
       vertices.push(x, y, z);
     }
 
-    const geometry = new THREE.BufferGeometry();
+    let geometry = new THREE.BufferGeometry();
     geometry.setAttribute(
       "position",
       new THREE.Float32BufferAttribute(vertices, 3)
     );
 
-    const material = new THREE.PointsMaterial({ color: 0x888888 });
+    let material = new THREE.PointsMaterial({ color: 0x888888 });
 
     const points = new THREE.Points(geometry, material);
 
@@ -49,6 +49,15 @@
     //  material =  new THREE.LineBasicMaterial({ color: 0x888888 });
     // let line = new THREE.Line( geometry, material );
     // scene.add(line);
+
+//sphere
+         material = new THREE.LineDashedMaterial({color: 0x7fc5f9, linewidth: 1, dashSize: 1, gapSize: 1 });
+         geometry = new THREE.SphereGeometry(30, 20, 20);
+        sphere = new THREE.Line( geometry, material );
+        sphere.position.x = 22;
+        sphere.computeLineDistances();
+        scene.add(sphere);
+
   };
 
   // set up the environment -
@@ -81,7 +90,7 @@
   let mainLoop = function () {
     //how to rotate at center point, not edge when 7 axis rotation?
 
-    // line.rotation.z += ADD;
+    sphere.rotation.z += ADD;
 
     renderer.render(scene, camera);
     requestAnimationFrame(mainLoop);
