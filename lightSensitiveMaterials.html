@@ -13,15 +13,40 @@
     //creating a cone 
     //to see light effects, must set a line and create movement/rotation
     let ADD = 0.01; //speed for animation
+    let SUB = 0.04;
+
 
     let createGeometry = function() {
-        let material = new THREE.MeshLambertMaterial({side: THREE.DoubleSide, color: 0x7fc5f9, emissive: 0x25673d, emmisiveIntensity: 0.5 });
+        //LambertMaterial is for non-shiny surfaces like stone. With light, it gets brighter (ex: emmisive)
+        let material = new THREE.MeshLambertMaterial({side: THREE.DoubleSide, color: 0x7fc5f9, emissive: 0x25673d, emissiveIntensity: 0.8 });
         // the emissive effect comes from inner light, so appears lightrs
-        let geometry = new THREE.ConeGeometry(3, 4, 20, 1, true);
+        let geometry = new THREE.ConeGeometry(6, 10, 10, 100, true);
         cone = new THREE.Mesh( geometry, material );
         cone.position.x = 7;
-
         scene.add(cone);
+
+        //Meshpong Material - for shiny surfaces (also with emissive, specular (color of shine));
+         material = new THREE.MeshPhongMaterial({side: THREE.DoubleSide, color: 0x7fc5f9, emissive: 0x25673d, emissiveIntensity: 0.8, shininess: 100, specular: 0x9d0a00  });
+         geometry = new THREE.BoxGeometry(7, 7, 7);
+        cube = new THREE.Mesh( geometry, material );
+        cube.position.x = -7;
+        scene.add(cube);
+
+        //Standard Material - based on physical materials, like metalic-roughness
+        material = new THREE.MeshStandardMaterial({side: THREE.DoubleSide, color: 0x7fc5f9, emissive: 0x25673d, emissiveIntensity: 0.8, metalness: 0.1, roughness: 1  });
+         geometry = new THREE.SphereGeometry(4, 30, 30);
+        sphere = new THREE.Mesh( geometry, material );
+        sphere.position.x = 22;
+        scene.add(sphere);
+
+        material = new THREE.MeshStandardMaterial({side: THREE.DoubleSide, color: 0x7fc5f9, emissive: 0x25673d, emissiveIntensity: 0.8, metalness: 1, roughness: .5 });
+         geometry = new THREE.TorusGeometry(4, 2, 3, 5)
+        torus = new THREE.Mesh( geometry, material );
+        torus.position.x = -22;
+        scene.add(torus);
+
+
+
     }
 
 
@@ -60,6 +85,17 @@
     let mainLoop = function() {
         cone.rotation.x += ADD;
         cone.rotation.y += ADD;
+        cube.rotation.x -= ADD;
+        cube.rotation.y += ADD;
+        torus.rotation.y -= ADD;
+        torus.rotation.x -= ADD;
+
+        sphere.position.y += SUB;
+        if (sphere.position.y >= 2 || sphere.position.y <= -2) {
+            SUB *= -1;
+        }
+
+
 
         renderer.render(scene, camera);
         requestAnimationFrame(mainLoop);
