@@ -6,40 +6,49 @@
   <body></body>
 </html>
 <script>
-  let scene, camera, renderer, cube;
+  let scene, camera, renderer, cylinder;
   let ADD = 0.02;
-//at present, shows a line triangle. Cannot get LineDashed or LineBasic to work. Need to implement buffer geometry I think
-//all found code deprecated, would need larger research
-//wanted : https://threejs.org/examples/#webgl_lines_dashed
+  //at present, shows a line triangle. Cannot get LineDashed or LineBasic to work. Need to implement buffer geometry I think
+  //all found code deprecated, would need larger research
+  //wanted : https://threejs.org/examples/#webgl_lines_dashed
   let createGeometry = function () {
     // //add cylinder with line material
-    // const material = new THREE.LineDashedMaterial({
-    //   color: 0xacd33f,
-    //  // linewidth: 1,
-    //   //scale: 1,
-    //   dashSize: 3,
-    //   gapSize: 2
-    // });
-    // let geometry = new THREE.SphereGeometry(6, 2, 4);
+   
+    //Points (like stars)
+    const vertices = [];
 
-    // sphere = new THREE.Line(geometry, material);
+    for (let i = 0; i < 10000; i++) {
+      const x = THREE.MathUtils.randFloatSpread(2000);
+      const y = THREE.MathUtils.randFloatSpread(2000);
+      const z = THREE.MathUtils.randFloatSpread(2000);
 
-    // sphere.computeLineDistances();
+      vertices.push(x, y, z);
+    }
 
-    // scene.add(sphere);
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute(
+      "position",
+      new THREE.Float32BufferAttribute(vertices, 3)
+    );
+
+    const material = new THREE.PointsMaterial({ color: 0x888888 });
+
+    const points = new THREE.Points(geometry, material);
+
+    scene.add(points);
 
 
-//makes a line triangle
-    const points = [];
-    points.push(new THREE.Vector3(-5, 0, 0));
-    points.push(new THREE.Vector3(5, 0, 0));
-    points.push(new THREE.Vector3(0, 5, 0));
-    points.push(new THREE.Vector3(-5, 0, 0));
+    //makes a line triangle
+    // const points = [];
+    // points.push(new THREE.Vector3(-5, 0, 0));
+    // points.push(new THREE.Vector3(5, 0, 0));
+    // points.push(new THREE.Vector3(0, 5, 0));
+    // points.push(new THREE.Vector3(-5, 0, 0));
 
-    let geometry = new THREE.BufferGeometry().setFromPoints(points);
-    let material =  new THREE.LineBasicMaterial({ color: 0x888888 });
-    let line = new THREE.Line( geometry, material );
-    scene.add(line);
+    //  geometry = new THREE.BufferGeometry().setFromPoints(points);
+    //  material =  new THREE.LineBasicMaterial({ color: 0x888888 });
+    // let line = new THREE.Line( geometry, material );
+    // scene.add(line);
   };
 
   // set up the environment -
@@ -51,7 +60,7 @@
 
     // create an locate the camera
     camera = new THREE.PerspectiveCamera(
-      70,
+      1950, //how close to star points?
       window.innerWidth / window.innerHeight,
       1,
       1000
@@ -72,7 +81,7 @@
   let mainLoop = function () {
     //how to rotate at center point, not edge when 7 axis rotation?
 
-   // line.rotation.z += ADD;
+    // line.rotation.z += ADD;
 
     renderer.render(scene, camera);
     requestAnimationFrame(mainLoop);
